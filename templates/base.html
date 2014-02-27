@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ current_page.page_title }}{% endblock %} - Raspberry Pi-Fi</title>
+    <link rel="stylesheet" type="text/css" href="/static/style/reset.css">
+    <link rel="stylesheet" type="text/css" href="/static/style/base.css">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu:300,400">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
+    {% block head %}
+    {% endblock %} 
+  </head>
+    <body>
+      <div id="header_container">
+        <div id="title_container">
+          <a style="text-decoration:none; color:#000;" href="."><h1 id="site_title">Raspberry Pi-Fi</h1></a>
+        </div>
+        <div id="logout">
+          {{ user.nickname() }}
+        </div>
+      </div>
+      <div id="menu">
+        {% for page in navigation_pages %}
+          <a href="{{ page.url }}">
+            <div class="menu_item {% if page.url == current_page.url %} menu_selected {% endif %}">
+              {{ page.page_title }}
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+      <div id="content">
+        {% block content %}
+        {% endblock %}
+      </div>
+      <div class="center980" id="footer">
+      &copy; Copyright 2014 by <a href="http://aporcupine.com">Tom Hanson</a>.
+      </div>
+  </body>
+</html>
