@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>Setup System:</h1>
+  {% if error %}
+    <h2>Sorry, that code doesn't seem to be correct, please try again.</h2>
+  {% endif %}
+  <p>Once turned on your device should start "speaking" 6 digits, please type these in below.</p>
+  <form action="" method="post">
+    <label for="registration_code">Audible code:</label>
+    <input type="text" name="registration_code"/>
+    <input type="submit" value="Enroll!">
+  </form>
+  
+{% endblock %}

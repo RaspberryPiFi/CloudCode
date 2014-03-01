@@ -1,0 +1,8 @@
+{% macro floating_box(img_src, text) -%}
+  <div class="floating_box">
+    <div class="floating_box_text">
+      {{ text }}
+    </div>
+    <img class="floating_box_img" src="{{ img_src }}" alt="{{ text }}"/>
+  </div>
+{%- endmacro %}

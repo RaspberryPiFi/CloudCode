@@ -16,5 +16,15 @@ class Page(ndb.Model):
   # If navigation_title is not present, it will not appear in the navigation.
   page_title = ndb.StringProperty()
   appear_in_navigation = ndb.BooleanProperty(default=False)
+
+class Group(ndb.Model):
+  """Models a single device group"""
+  registration_code = ndb.StringProperty(required=True)
+  registered = ndb.BooleanProperty(default=False)
+  owner_id = ndb.StringProperty()
+
+class Device(ndb.Model):
+  """Models a single device"""
+  name = ndb.StringProperty(default='Unamed Device')
   
   

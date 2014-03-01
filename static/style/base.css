@@ -27,6 +27,32 @@ p {
   margin: 1.12em 0;
 }
 
+input, textarea {   
+  padding: 0.4em;  
+  border: solid 1px #E5E5E5;
+  background: #FFFFFF;
+  -moz-box-shadow: rgba(0,0,0, 0.1) 0 0 8px;  
+  -webkit-box-shadow: rgba(0,0,0, 0.1) 0 0 8px;
+  box-shadow: rgba(0,0,0, 0.1) 0 0 8px;
+}
+  
+input:hover,textarea:hover,  
+input:focus,textarea:focus {   
+  border-color: #C9C9C9;   
+}
+
+input[type='submit'] {
+  padding: 0.5em 1.5em;
+  background-color:#CBE86B;
+  border-radius: 5px;
+}
+    
+label {
+  display: block;
+  margin-bottom: 0.4em;
+  color: #999999;   
+}
+
 #header_container {
   height:60px;
   width:100%;
@@ -59,7 +85,26 @@ p {
   padding: 0 5px;
 }
 
+#content:before,
+#content:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+#content:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+#content {
+    *zoom: 1;
+}
+
 #footer {
+  margin-top: 10px;
   width: 100%;
   text-align: center;
 }
@@ -77,5 +122,32 @@ p {
 .menu_selected {
   color: #0b5394;
   background-color: #cfe2f3;
-  
 }
+
+.floating_container {
+  text-align: center;
+}
+
+.floating_box {
+  height: 250px;
+  width: 250px;
+  position:relative;
+  margin: auto 1.5em;
+  display: inline-block;
+}
+
+.floating_box_text {
+  position: absolute;
+	width: 250px;
+	background-color: rgba(0,0,0,0.5);
+	text-align: center;
+	color: #FFF;
+	font-size: 1.5em;
+	bottom:0;
+}
+
+.floating_box_img {
+  height:250px;
+  width:250px;
+}
+

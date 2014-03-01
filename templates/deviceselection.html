@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>Select a Device:</h1>
+  <div class="floating_container">
+  {% for device in devices %}
+    {{ macros.floating_box('/static/images/device.png',device.name) }}
+  {% endfor %}
+  </div>
+{% endblock %}

@@ -9,6 +9,9 @@ handlers:
   static_dir: static/
   login: required
 
+- url: /api/.*
+  script: apphandlers.app
+  
 - url: /.*
   script: apphandlers.app
   login: required

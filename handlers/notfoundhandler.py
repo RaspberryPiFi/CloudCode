@@ -1,4 +1,4 @@
-"""404handler.py: Handles requests to pages that dont exist"""
+"""notfoundhandler.py: Handles requests to pages that dont exist"""
 
 __author__ = "Tom Hanson"
 __copyright__ = "Copyright 2014"
@@ -12,7 +12,7 @@ from modules import customframework
 
 class HandleNotFound(customframework.RequestHandler):
   url = r'/<:.*>'
-  #page_title = 'Error Occurred... Uh-Oh'
+  page_title = 'Error Occurred... Uh-Oh'
   
   def get(self, *args, **kwargs):
     """Shows 404 error"""

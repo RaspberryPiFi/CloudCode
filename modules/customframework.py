@@ -10,6 +10,7 @@ __email__ = "tom@aporcupine.com"
 
 from config import JINJA_ENVIRONMENT
 from google.appengine.api import users, memcache
+from google.appengine.ext import ndb
 from webob import exc
 from models import Page
 
@@ -69,7 +70,7 @@ class RequestHandler(webapp2.RequestHandler):
     else:
       query = Page.query(Page.appear_in_navigation == True)
       #TODO: Change the fetch limit or document that it'll only fetch 10
-      navigation_pages = query.fetch(10)
+      navigation_pages = query.fetch()
       if not memcache.set('navigation_pages', navigation_pages):
         logging.error('Write to memcache failed!')
       return navigation_pages
@@ -110,10 +111,11 @@ class WSGIApplication(webapp2.WSGIApplication):
         A list of FrameworkHandler subclasses which identify routes and 
         their meta data.
     :returns:
-        A list of webapp2.Route instances.
+        A list of webapp2.Route instance.
     """
     memcache.delete('navigation_pages')
     routes = []
+    new_key_set = set()
     for route_handler in route_handlers:
       # Checks if datastore entry exits and uses if it is.
       query = Page.query(Page.url == route_handler.url)
@@ -128,8 +130,13 @@ class WSGIApplication(webapp2.WSGIApplication):
       datastore_entity.appear_in_navigation = route_handler.appear_in_navigation
       #TODO: Not write to the datastore if there are no changes to be made
       datastore_entity.put()
+      new_key_set.add(datastore_entity.key)
       
       # Creates a route for each handler and adds it to the routes list
       routes.append(webapp2.Route(route_handler.url,route_handler))
       
+    # The following removes old pages from the datastore
+    old_key_set = set(Page.query().fetch(keys_only=True))
+    ndb.delete_multi(list(old_key_set - new_key_set))
+    
     return routes
