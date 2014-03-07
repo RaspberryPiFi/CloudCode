@@ -1,5 +1,8 @@
-{% macro floating_box(img_src, text) -%}
+{% macro floating_box(img_src, text, link_url) -%}
   <div class="floating_box">
+  <a href="{{ link_url }}">
+    <span class="box_link_span"></span>
+  </a>
     <div class="floating_box_text">
       {{ text }}
     </div>

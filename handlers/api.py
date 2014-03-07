@@ -8,11 +8,13 @@ __license__ = "GPL"
 __maintainer__ = "Tom Hanson"
 __email__ = "tom@aporcupine.com"
 
+from google.appengine.api import memcache
 from modules import customframework
 from models import Group
 from models import Device
 import json
 import logging
+
 
 
 class SystemEnrollHandler(customframework.RequestHandler):
@@ -27,7 +29,7 @@ class SystemEnrollHandler(customframework.RequestHandler):
       if len(registration_code) != 6: raise ValueError
     except:
       self.error(400)
-      self.response.write('6 digit registration_code in JSON format must be supplied!')
+      self.response.write('6 digit registration_code in a JSON object must be supplied!')
       return
     query = Group.query(Group.registration_code == registration_code)
     if query.fetch():
@@ -53,7 +55,7 @@ class CheckEnrollHandler(customframework.RequestHandler):
       group_id = int(request['group_id'])
     except:
       self.error(400)
-      self.response.write('group_id in JSON format must be supplied!')
+      self.response.write('group_id in a JSON object must be supplied!')
       return
     group = Group.get_by_id(group_id)
     if group:
@@ -74,10 +76,9 @@ class DeviceEnrollHandler(customframework.RequestHandler):
     try:
       request = json.loads(self.request.body)
       group_id = int(request['group_id'])
-      logging.error(group_id)
     except:
       self.error(400)
-      self.response.write('group_id in JSON format must be supplied!')
+      self.response.write('group_id in a JSON object must be supplied!')
       return
     group = Group.get_by_id(group_id)
     if group:
@@ -88,6 +89,28 @@ class DeviceEnrollHandler(customframework.RequestHandler):
     else:
       self.error(400)
       self.response.write('Group with id provided does not exist')
+      
+class GroupUpdateHandler(customframework.RequestHandler):
+  url = '/api/group/update'
+  page_title = 'group update'
+  
+  def post(self):
+    """Communicates any actions to be taken to the master device"""
+    try:
+      request = json.loads(self.request.body)
+      group_id = int(request['group_id'])
+    except:
+      self.error(400)
+      self.response.write('group_id in a JSON object must be supplied!')
+      return
     
-    
+    actions = memcache.get('actions_%s' % group_id)
+    if actions:
+      memcache.set('actions_%s' % group_id, [])
+      json_string = json.dumps({'actions': actions})
+    else:
+      json_string = json.dumps({})
+      
+    self.response.headers['Content-Type'] = "application/json"
+    self.response.write(json_string)
     

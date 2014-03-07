@@ -1,4 +1,4 @@
-"""apphandlers.py: Sets up the application handlers."""
+"""apphandlers.py: Sets up the application handlers"""
 
 __author__ = "Tom Hanson"
 __copyright__ = "Copyright 2014"
@@ -9,19 +9,22 @@ __maintainer__ = "Tom Hanson"
 __email__ = "tom@aporcupine.com"
 
 from handlers import notfoundhandler
-from handlers import deviceselection
+from handlers import devicecontrol
 from handlers import settings
 from handlers import api
 from modules import customframework
 import webapp2
 
 app = customframework.WSGIApplication([
-  deviceselection.DeviceSelectionHandler,
+  devicecontrol.DeviceSelectionHandler,
+  devicecontrol.DeviceTestHandler,
+  devicecontrol.DeviceActionHandler,
   settings.SettingsHandler,
   settings.SetupDeviceHandler,
   api.SystemEnrollHandler,
   api.CheckEnrollHandler,
   api.DeviceEnrollHandler,
+  api.GroupUpdateHandler,
   # 404 handler
   notfoundhandler.HandleNotFound
   ], debug=True)
