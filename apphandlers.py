@@ -19,6 +19,8 @@ app = customframework.WSGIApplication([
   devicecontrol.DeviceSelectionHandler,
   devicecontrol.DeviceTestHandler,
   devicecontrol.DeviceActionHandler,
+  devicecontrol.PartyTestHandler,
+  devicecontrol.PartyActionHandler,
   settings.SettingsHandler,
   settings.SetupDeviceHandler,
   api.SystemEnrollHandler,

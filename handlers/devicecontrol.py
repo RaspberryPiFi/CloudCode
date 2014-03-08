@@ -26,12 +26,13 @@ class DeviceSelectionHandler(customframework.RequestHandler):
     """Shows the user their devices"""
     user_id = users.get_current_user().user_id()
     #TODO: Add multiple group functionality
-    group_list = Group.query(Group.owner_id == user_id).fetch(1)
-    if not group_list:
+    query = Group.query(Group.owner_id == user_id)
+    group_keys = query.fetch(1, keys_only=True)
+    if not group_keys:
       self.redirect('/settings/enroll')
       return
     
-    devices = Device.query(ancestor=group_list[0].key)
+    devices = Device.query(ancestor=group_keys[0])
     self.render_template('deviceselection.html',{'devices': devices})
 
 class DeviceTestHandler(customframework.RequestHandler):
@@ -73,8 +74,41 @@ class DeviceActionHandler(customframework.RequestHandler):
     memcache.set(memcache_key, action_list)
     self.redirect('/device/test?id=%s' % device_urlsafe_key)
     
+class PartyTestHandler(customframework.RequestHandler):
+  url = '/party/test'
+  page_title = 'Party Mode Test Page'
+  
+  def get(self):
+    self.render_template('partytest.html')
     
+class PartyActionHandler(customframework.RequestHandler):
+  url='/party/action'
+  page_title = 'handle party actions'
+  
+  def post(self):
+    """This is a temporary way of handling party actions"""
+    action_type = self.request.get('action')
+    arg = self.request.get('arg')
+    user_id = users.get_current_user().user_id()
+    query = Group.query(Group.owner_id == user_id)
+    group_key = query.fetch(1, keys_only=True)[0]
+    action = {'type': action_type, 'party_mode':True}
+    if action_type == 'set_volume':
+      action['arg'] = float(arg)
+    elif action_type == 'play_list':
+      action['arg'] = arg.split(',')
+    devices = Device.query(ancestor=group_key)
+    action['device_ids'] = [str(device.key.id()) for device in devices] 
     
-    
-    
-    
+    memcache_key = 'actions_%s' % group_key.id()
+    action_list = memcache.get(memcache_key)
+    if action_list: 
+      action_list.append(action)
+    else: 
+      action_list = [action]
+    memcache.set(memcache_key, action_list)
+    self.redirect('/party/test')
+
+
+
+

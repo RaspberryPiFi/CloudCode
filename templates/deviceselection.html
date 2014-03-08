@@ -7,5 +7,8 @@
                            device.name,
                            '/device/test?id=' + device.key.urlsafe()) }}
   {% endfor %}
+    {{ macros.floating_box('/static/images/party.png', 
+                           'Party Mode',
+                           '/party/test') }}
   </div>
 {% endblock %}

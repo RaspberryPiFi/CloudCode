@@ -75,8 +75,7 @@ class RequestHandler(webapp2.RequestHandler):
         logging.error('Write to memcache failed!')
       return navigation_pages
       
-    
-  
+
 class HandledHTTPException(exc.HTTPException):
   """Creates a custom HTTPException"""
   def __init__(self, code, wsgi_response):
