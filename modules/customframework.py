@@ -1,4 +1,5 @@
-"""webappframework.py: Contains an implementation of the webapp2.RequestHandler with custom error handling"""
+"""webappframework.py: Contains an implementation of the
+   webapp2.RequestHandler with custom error handling"""
 
 __author__ = "Tom Hanson"
 __copyright__ = "Copyright 2014"
@@ -8,20 +9,27 @@ __license__ = "GPL"
 __maintainer__ = "Tom Hanson"
 __email__ = "tom@aporcupine.com"
 
-from config import JINJA_ENVIRONMENT
+import logging
+
 from google.appengine.api import users, memcache
 from google.appengine.ext import ndb
 from webob import exc
+import webapp2
+
+from config import JINJA_ENVIRONMENT
 from models import Page
 
-import webapp2
-import logging
+# Pylint doesn't like that my HandledHTTPException inherits exc.HTTPException
+# pylint: disable=W0710
+# pylint: disable=W0233
+# It also seems to think that webapp2.WSGIApplication is an old-style class
+# pylint: disable=E1002
 
 
 class RequestHandler(webapp2.RequestHandler):
   """Handles HTTP requests"""
   appear_in_navigation = False
-  def abort(self,code,message=None,headers=None,exception=None):
+  def abort(self, code, message=None, headers=None, exception=None):
     """Raises exception and displays error page"""
     self.response.status = code
     self.response.clear()
@@ -31,7 +39,7 @@ class RequestHandler(webapp2.RequestHandler):
       raise KeyError('No exception is defined for code %r.' % code)
       
     if not message:
-        message = cls.explanation
+      message = cls.explanation
 
     if code >= 500:
       if exception:
@@ -49,13 +57,16 @@ class RequestHandler(webapp2.RequestHandler):
       'message': message,
     }
 
-    self.render_template('error.html',template_values)
+    self.render_template('error.html', template_values)
 
-    raise HandledHTTPException(code,self.response)
+    raise HandledHTTPException(code, self.response)
     #TODO: Add some try catches for any errors in this code
 
-  def render_template(self,template, values={}):
+  def render_template(self, template, values=None):
     """Renders the template and writes this to the reponse"""
+    # Would love to use default value but it is dangerous to use {}
+    if not values:
+      values = {}
     values['user'] = users.get_current_user()
     values['navigation_pages'] = self.get_navigation_pages()
     #TODO: Handle error in event that self.url does not exist
@@ -64,6 +75,7 @@ class RequestHandler(webapp2.RequestHandler):
     self.response.write(template.render(values))
   
   def get_navigation_pages(self):
+    """Returns the pages to be included in the navigation bar"""
     navigation_pages = memcache.get('navigation_pages')
     if navigation_pages is not None:
       return navigation_pages
@@ -132,7 +144,7 @@ class WSGIApplication(webapp2.WSGIApplication):
       new_key_set.add(datastore_entity.key)
       
       # Creates a route for each handler and adds it to the routes list
-      routes.append(webapp2.Route(route_handler.url,route_handler))
+      routes.append(webapp2.Route(route_handler.url, route_handler))
       
     # The following removes old pages from the datastore
     old_key_set = set(Page.query().fetch(keys_only=True))

@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1>Select a Device:</h1>
+  <h1>All Artists:</h1>
+  {% if statuses['party_mode'] %}
+    <h2>You are currently in Party Mode, to access individual devices please click on "Party Mode" below and then click stop!</h2>
+  {% endif %}
   <div class="floating_container">
-  {% for device in devices %}
-    {{ macros.floating_box('/static/images/device.png', 
-                           device.name,
-                           '/device/test?id=' + device.key.urlsafe()) }}
-  {% endfor %}
+  {% if not statuses['party_mode'] %}
+    {% for device in devices %}
+      {{ macros.floating_box('/static/images/device.png', 
+                             device.name,
+                             '/device?key=' + device.key.urlsafe(),
+                             (all_dead or not statuses['%s'%device.key.id()]['alive'])) }}
+    {% endfor %}
+  {% endif %}
     {{ macros.floating_box('/static/images/party.png', 
                            'Party Mode',
-                           '/party/test') }}
+                           '/party') }}
   </div>
 {% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}
+  <script src="/static/js/control-compiled.js"></script>
+{% endblock %}
+{% block controls %}
+  {{ macros.player_controls(party_mode) }}
+{% endblock %}
+{% block content %}
+  <h1>Music:</h1>
+  <div class="floating_container">
+  {% if party_mode %}
+    {{ macros.floating_box('/static/images/note.png', 
+                           'Artists',
+                           '/party/artists') }}
+    {{ macros.floating_box('/static/images/note.png', 
+                           'Albums',
+                           '/party/albums') }}
+    {{ macros.floating_box('/static/images/note.png', 
+                           'Songs',
+                           '/party/songs') }}
+  {% else %}
+    {{ macros.floating_box('/static/images/note.png', 
+                           'Artists',
+                           '/device/artists?key=' + device_urlsafe_key) }}
+    {{ macros.floating_box('/static/images/note.png', 
+                           'Albums',
+                           '/device/albums?key=' + device_urlsafe_key) }}
+    {{ macros.floating_box('/static/images/note.png', 
+                           'Songs',
+                           '/device/songs?key=' + device_urlsafe_key) }}
+  {% endif  %}
+  </div>
+   <script>
+    var control = new pisync.ui.control();
+    control.setUpControlEvents('{{ 'party_mode' if party_mode else device_urlsafe_key }}');
+  </script>
+{% endblock %}

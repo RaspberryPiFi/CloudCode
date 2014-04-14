@@ -1,11 +1,55 @@
-{% macro floating_box(img_src, text, link_url) -%}
+{% macro floating_box(img_src, text, link_url, dead) -%}
   <div class="floating_box">
-  <a href="{{ link_url }}">
-    <span class="box_link_span"></span>
-  </a>
+  {% if not dead %}
+    <a href="{{ link_url }}">
+      <span class="box_link_span"></span>
+    </a>
+  {% endif %}
     <div class="floating_box_text">
-      {{ text }}
+      {{ text }} {{ '(Offline)' if dead }}
     </div>
-    <img class="floating_box_img" src="{{ img_src }}" alt="{{ text }}"/>
+    <img class="floating_box_img{{ ' offline_img' if dead }}" src="{{ img_src }}" alt="{{ text }}"/>
   </div>
 {%- endmacro %}
+{% macro song_row(song) -%}
+  <tr class="song_row">
+    <td data-column="number">
+      <span class="track_number"> {{ song.track if song.track else 'N/A' }}</span>
+      <span class="play_symbol">&#9658;</span>
+    </td>
+    <td data-column="title">{{ song.name }}</td>
+    <td data-column="artist">{{ song.artist_name }}</td>
+    <td data-column="album">{{ song.album_name }}</td>
+    <td data-column="length">{{ song.length }}</td>
+  </tr>
+{%- endmacro %}
+{% macro player_controls(party_mode) -%}
+  <div id="controls_container">
+    <div id="now_playing">
+      Now Playing: <span id="now_playing_txt"></span>
+    </div>
+    <div id="controls">
+      <div id="buttons">
+        <img id="skip_backward_button" class="button" src="/static/images/skip_backward.png" alt="Skip Backward Button"/>
+        {% if party_mode %}
+          <img id="stop_button" class="button" src="/static/images/stop.png" alt="Stop Button"/>
+        {% else %}
+          <img id="pause_button" class="button" src="/static/images/pause.png" alt="Pause Button"/>
+        {% endif %}
+        <img id="skip_forward_button" class="button" src="/static/images/skip_forward.png" alt="Skip Forward Button"/>
+      </div>
+    </div>
+    <div id="volume_container">
+      <img class="volume_img" src="/static/images/volume_down.png" />
+      <div id="volume_control">
+        <div id="volume_slider" class="goog-slider">
+          <div class="goog-slider-bar"></div>
+          <div class="goog-slider-thumb"></div>
+        </div>
+      </div>
+      <img class="volume_img" src="/static/images/volume_up.png" />
+    </div>
+    
+  </div>
+{%- endmacro %}
+  

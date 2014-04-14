@@ -27,7 +27,7 @@ p {
   margin: 1.12em 0;
 }
 
-input, textarea {   
+input, textarea, button {   
   padding: 0.4em;  
   border: solid 1px #E5E5E5;
   background: #FFFFFF;
@@ -41,7 +41,7 @@ input:focus,textarea:focus {
   border-color: #C9C9C9;   
 }
 
-input[type='submit'] {
+input[type='submit'], button {
   padding: 0.5em 1.5em;
   background-color:#CBE86B;
   border-radius: 5px;
@@ -95,10 +95,6 @@ label {
     clear: both;
 }
 
-/**
- * For IE 6/7 only
- * Include this rule to trigger hasLayout and contain floats.
- */
 #content {
     *zoom: 1;
 }
@@ -107,6 +103,115 @@ label {
   margin-top: 10px;
   width: 100%;
   text-align: center;
+}
+
+#controls_container {
+  background-color: #cfe2f3;
+  width: 100%;
+  height:60px;
+  text-align: center;
+  position: relative;
+}
+
+#controls {
+  height: 60px;
+  position: relative;
+  display: inline-block;
+  width:110px;
+}
+
+#buttons {
+  position: absolute;
+  bottom:4px;
+  width:110px;
+}
+
+#notification_container {
+  position: fixed;
+  top: 0;
+  text-align: center;
+  width:100%;
+  z-index: 1;
+}
+
+#notification_bar {
+  position: relative;
+  display: none;
+  height: 25px;
+  min-width: 300px;
+  border-radius: 0 0 10px 10px;
+}
+
+#volume_container {
+  width: 200px;
+  position: absolute;
+  right: 5px;
+  top: 20px;
+}
+
+#volume_control {
+  display: inline-block;
+  position: relative;
+}
+
+#volume_slider {
+  height: 20px;
+  width:150px;
+}
+
+#device_table td {
+  padding:0 5px;
+}
+
+#now_playing {
+  position: absolute;
+  left: 5px;
+  top: 20px;
+  width: 40%;
+  height: 40px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.goog-slider-thumb {
+  position: absolute;
+  background-color: #0b5394;
+  overflow: hidden;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
+
+.goog-slider-bar {
+  position:absolute;
+  width:100%;
+  top:9px;
+  border:1px solid gray;
+  overflow:hidden;
+  height:0
+}
+
+.offline_img {
+  filter: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'><filter%20id='grayscale'><feColorMatrix%20type='matrix'%20values='0.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200%200%200%201%200'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+}
+
+.notification_info {
+  background-color:#FFFABF;
+  border: 1px solid #FFDBA3;
+}
+
+.notification_error {
+  background-color: #FF0000;
+  border: 1px solid #D60000;
+}
+    
+.button:hover {
+  cursor:pointer;
+  opacity:0.4;
 }
 
 .menu_item {
@@ -160,3 +265,52 @@ label {
   z-index: 1;
   background-image: url('/static/images/transparent.gif');
 }
+
+.song_table {
+  table-layout:fixed;
+  width:90%;
+  margin: 0 auto;
+}
+
+.song_table th {
+  padding:12.5px 0;
+  text-align:left;
+}
+
+.song_table td {
+  padding:12.5px 0;
+  border-bottom:2px solid #cfe2f3;
+}
+
+.song_table tr:hover td {
+  background-color: #cfe2f3;
+  cursor:pointer;
+}
+
+.play_symbol {
+  display:none;
+}
+
+.track_number {
+  display:inline;
+}
+
+.song_table tr:hover .play_symbol {
+  display:inline;
+}
+
+.song_table tr:hover .track_number {
+  display:none;
+}
+
+.song_table [data-column="number"] {
+  width:50px;
+  text-align:center;
+}
+
+.song_table [data-column="length"] {
+  width:75px;
+  text-align:center;
+}
+
+

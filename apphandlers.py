@@ -13,20 +13,32 @@ from handlers import devicecontrol
 from handlers import settings
 from handlers import api
 from modules import customframework
-import webapp2
 
 app = customframework.WSGIApplication([
   devicecontrol.DeviceSelectionHandler,
-  devicecontrol.DeviceTestHandler,
+  devicecontrol.DeviceMainPage,
+  devicecontrol.DeviceArtists,
+  devicecontrol.DeviceAlbums,
+  devicecontrol.DeviceArtist,
+  devicecontrol.DeviceSongs,
+  devicecontrol.PartyMainPage,
+  devicecontrol.PartyArtists,
+  devicecontrol.PartyAlbums,
+  devicecontrol.PartyArtist,
+  devicecontrol.PartySongs,
   devicecontrol.DeviceActionHandler,
-  devicecontrol.PartyTestHandler,
-  devicecontrol.PartyActionHandler,
+  devicecontrol.DevicePlayHandler,
+  devicecontrol.DeviceUpdateHandler,
+  
   settings.SettingsHandler,
-  settings.SetupDeviceHandler,
+  settings.SetupGroupHandler,
+  
   api.SystemEnrollHandler,
   api.CheckEnrollHandler,
   api.DeviceEnrollHandler,
   api.GroupUpdateHandler,
+  api.LibraryUpdateHandler,
+  
   # 404 handler
   notfoundhandler.HandleNotFound
   ], debug=True)

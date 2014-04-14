@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}
+  <script src="/static/js/control-compiled.js"></script>
+{% endblock %}
+{% block controls %}
+  {{ macros.player_controls(party_mode) }}
+{% endblock %}
+{% block content %}
+  <h1>
+  {{ '%s - %s:' % (artist_name, album_name) if album_name else 'All songs:' }}
+  </h1>
+  <table class="song_table">
+    <tr class="title_row">
+      <th data-column="number">#</td>
+      <th data-column="title">Title</td>
+      <th data-column="artist">Artist</td>
+      <th data-column="album">Album</td>
+      <th data-column="length">Length</td>
+    </tr>
+    {% if album_name  %}
+      {% for song in songs if album_name == song.album_name %}
+        {{ macros.song_row(song) }}
+      {% endfor %}
+    {% else %}
+      {% for song in songs %}
+        {{ macros.song_row(song) }}
+      {% endfor %}
+    {% endif %}
+  </table>
+  <script>
+    var control = new pisync.ui.control();
+    control.setUpControlEvents('{{ 'party_mode' if party_mode else device_urlsafe_key }}');
+    control.setUpSongEvents('{{ 'party_mode' if party_mode else device_urlsafe_key }}',
+                             false,
+                             {{ album_id if album_id else 'false'}});
+  </script>
+{% endblock %}

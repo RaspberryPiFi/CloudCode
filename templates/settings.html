@@ -1,5 +1,33 @@
 {% extends 'base.html' %}
+{% block head %}
+  <script src="/static/js/control-compiled.js"></script>
+{% endblock %}
 {% block content %}
   <h1>Device Settings:</h1>
-  
+  <table id="device_table">
+      <tr>
+        <th>Device Name</th>
+        <th>Play Test Tone</th>
+      </tr>
+      {% for device in devices %}
+        <tr>
+          <td>
+            <form action="settings" method="post">
+              <input type="text" name="name" value="{{ device.name }}"/>
+              <input type="hidden" name="device_urlsafe_key" value="{{ device.key.urlsafe() }}"/>
+              <input type="submit" value="Submit"/>
+            </form>
+          </td>
+          <td>
+            <button class="test_tone" data-device-key="{{ device.key.urlsafe() }}">
+              Play Test Tone
+            </button>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    <script>
+      var control = new pisync.ui.control();
+      control.setUpTestToneEvents();
+    </script>
 {% endblock %}

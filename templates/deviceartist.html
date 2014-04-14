@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block head %}
+  <script src="/static/js/control-compiled.js"></script>
+{% endblock %}
+{% block controls %}
+  {{ macros.player_controls(party_mode) }}
+{% endblock %}
+{% block content %}
+  <h1>{{ artist_name }}</h1>
+  <h2>Albums</h2>
+  <div class="floating_container">
+    {% for album in albums %}
+      {% if artist_name == album.artist_name %}
+        {% if party_mode %}
+          {{ macros.floating_box('/static/images/note.png', 
+              album.name,
+              '/party/songs?album=%d' % (loop.index-1)) }}
+        {% else %}
+          {{ macros.floating_box('/static/images/note.png', 
+              album.name,
+              '/device/songs?album=%d&key=%s'%(loop.index-1, device_urlsafe_key)) }}
+        {% endif %}
+      {% endif%}
+    {% endfor %}
+  </div>
+  <h2>Songs</h2>
+  <table class="song_table">
+    <tr class="title_row">
+      <th data-column="number">#</td>
+      <th data-column="title">Title</td>
+      <th data-column="artist">Artist</td>
+      <th data-column="album">Album</td>
+      <th data-column="length">Length</td>
+    </tr>
+    {% for song in songs if artist_name == song.artist_name %}
+      {{ macros.song_row(song) }}
+    {% endfor %}
+  </table>
+  <script>
+    var control = new pisync.ui.control();
+    control.setUpControlEvents('{{ 'party_mode' if party_mode else device_urlsafe_key }}');
+    control.setUpSongEvents('{{ 'party_mode' if party_mode else device_urlsafe_key }}',
+                             {{ artist_id }},
+                             false);
+  </script>
+{% endblock %}

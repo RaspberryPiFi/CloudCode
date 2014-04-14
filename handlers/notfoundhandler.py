@@ -10,7 +10,12 @@ __email__ = "tom@aporcupine.com"
 
 from modules import customframework
 
+# Pylint doesn't like that I don't used args or kwargs
+# pylint: disable=W0613
+
 class HandleNotFound(customframework.RequestHandler):
+  """Provides methods to handle get or post requests to an unknown page
+     This is basically only here to make the 404 page pretty"""
   url = r'/<:.*>'
   page_title = 'Error Occurred... Uh-Oh'
   

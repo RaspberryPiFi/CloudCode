@@ -12,6 +12,9 @@
     {% endblock %} 
   </head>
     <body>
+      <div id="notification_container">
+        <div id="notification_bar" class="notification_error"></div>
+      </div>
       <div id="header_container">
         <div id="title_container">
           <a style="text-decoration:none; color:#000;" href="/"><h1 id="site_title">Raspberry Pi-Fi</h1></a>
@@ -31,6 +34,7 @@
           </a>
         {% endfor %}
       </div>
+      {% block controls %} {% endblock %}
       <div id="content">
         {% block content %}
         {% endblock %}
