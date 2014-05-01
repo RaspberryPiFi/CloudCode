@@ -91,6 +91,9 @@ class DeviceMainPage(customframework.RequestHandler):
   def get(self):
     """Renders the main page"""
     device_urlsafe_key = self.request.get('key')
+    group_key = get_group_key(ndb.Key(urlsafe=device_urlsafe_key))
+    if not group_key:
+      self.abort(403,'This device is not part of your group!')
     template_values = {'device_urlsafe_key': device_urlsafe_key}
     self.render_template('devicemain.html', template_values)
     
