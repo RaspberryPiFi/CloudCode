@@ -68,6 +68,8 @@ class RequestHandler(webapp2.RequestHandler):
     if not values:
       values = {}
     values['user'] = users.get_current_user()
+    if values['user']:
+      values['logout_url'] = users.create_logout_url(self.request.url)
     values['navigation_pages'] = self.get_navigation_pages()
     #TODO: Handle error in event that self.url does not exist
     values['current_page'] = self

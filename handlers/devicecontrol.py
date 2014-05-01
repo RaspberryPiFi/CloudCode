@@ -29,7 +29,7 @@ def get_group_key(device_key=False):
       return False
     group_key = group_keys[0]
     memcache.set('group_key_%s' % user_id, group_key)
-  if device_key and device_key != 'party_mode':
+  if device_key:
     if group_key != device_key.parent():
       return False
   return group_key

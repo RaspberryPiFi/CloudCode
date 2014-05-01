@@ -21,7 +21,8 @@
         </div>
         <div id="logout">
           {% if user %}
-            {{ user.nickname() }}
+            {{ user.nickname() }} | 
+            <a id="logout_link" href="{{ logout_url }}">Logout</a>
           {% endif %}
         </div>
       </div>

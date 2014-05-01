@@ -10,7 +10,7 @@ __email__ = "tom@aporcupine.com"
 
 from modules import customframework
 
-# Pylint doesn't like that I don't used args or kwargs
+# Pylint doesn't like that I don't use args or kwargs
 # pylint: disable=W0613
 
 class HandleNotFound(customframework.RequestHandler):

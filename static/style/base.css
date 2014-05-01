@@ -175,6 +175,15 @@ label {
   text-overflow: ellipsis;
 }
 
+#logout_link:link {
+  color:#0b5394;
+  text-decoration:none;
+}
+
+#logout_link:hover {
+  text-decoration:underline;  
+} 
+
 .goog-slider-thumb {
   position: absolute;
   background-color: #0b5394;
