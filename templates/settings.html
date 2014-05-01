@@ -4,6 +4,9 @@
 {% endblock %}
 {% block content %}
   <h1>Device Settings:</h1>
+  {% if error %}
+    <h2>Sorry, the name you entered is not valid.</h2>
+  {% endif %}
   <table id="device_table">
       <tr>
         <th>Device Name</th>

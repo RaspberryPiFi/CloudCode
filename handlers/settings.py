@@ -25,6 +25,7 @@ class SettingsHandler(customframework.RequestHandler):
     """Renders a set of forms to change a device's name"""
     user_id = users.get_current_user().user_id()
     group_key = memcache.get('group_key_%s' % user_id)
+    error = self.request.get('error')
     if not group_key:
       query = Group.query(Group.owner_id == user_id)
       group_keys = query.fetch(1, keys_only=True)
@@ -33,12 +34,17 @@ class SettingsHandler(customframework.RequestHandler):
       group_key = group_keys[0]
       memcache.set('group_key_%s' % user_id, group_key)
     devices = Device.query(ancestor=group_key)
-    self.render_template('settings.html', {'devices': devices})
+    template_values = {'devices': devices,
+                       'error': error}
+    self.render_template('settings.html', template_values)
     
   def post(self):
     """Changes a device's name in the datastore"""
     device_urlsafe_key = self.request.get('device_urlsafe_key')
     new_device_name = self.request.get('name')
+    if not new_device_name:
+      self.redirect('settings?error=1')
+      return
     device = ndb.Key(urlsafe=device_urlsafe_key).get()
     device.name = new_device_name
     device.put()
