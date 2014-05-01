@@ -158,7 +158,8 @@ class DeviceArtist(customframework.RequestHandler):
     template_values = {'device_urlsafe_key': device_urlsafe_key,
                        'albums': albums,
                        'songs': songs,
-                       'artist_name': artist.name}
+                       'artist_name': artist.name,
+                       'artist_id': artist_id}
                        
     self.render_template('deviceartist.html', template_values)
 
