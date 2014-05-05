@@ -31,6 +31,7 @@ class SettingsHandler(customframework.RequestHandler):
       group_keys = query.fetch(1, keys_only=True)
       if not group_keys:
         self.redirect('/settings/enroll')
+        return
       group_key = group_keys[0]
       memcache.set('group_key_%s' % user_id, group_key)
     devices = Device.query(ancestor=group_key)
